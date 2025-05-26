@@ -30,6 +30,16 @@ build:
 	@$(MAKE) -s build-frontend
 	@echo "$(GREEN)Build completed successfully.$(RESET)"
 
+# Build without pre-commit hooks (for environments without SQLite)
+build-no-hooks:
+	@echo "$(GREEN)Building project without pre-commit hooks...$(RESET)"
+	@$(MAKE) -s check-dependencies
+	@$(MAKE) -s install-python-dependencies
+	@$(MAKE) -s install-frontend-dependencies
+	@$(MAKE) -s build-frontend
+	@echo "$(YELLOW)Note: Pre-commit hooks were skipped. SQLite3 support is required for pre-commit hooks.$(RESET)"
+	@echo "$(GREEN)Build completed successfully.$(RESET)"
+
 check-dependencies:
 	@echo "$(YELLOW)Checking dependencies...$(RESET)"
 	@$(MAKE) -s check-system
@@ -320,6 +330,7 @@ help:
 	@echo "$(BLUE)Usage: make [target]$(RESET)"
 	@echo "Targets:"
 	@echo "  $(GREEN)build$(RESET)               - Build project, including environment setup and dependencies."
+	@echo "  $(GREEN)build-no-hooks$(RESET)      - Build project without pre-commit hooks (for environments without SQLite)."
 	@echo "  $(GREEN)lint$(RESET)                - Run linters on the project."
 	@echo "  $(GREEN)setup-config$(RESET)        - Setup the configuration for OpenHands by providing LLM API key,"
 	@echo "                        LLM Model name, and workspace directory."
@@ -332,4 +343,4 @@ help:
 	@echo "  $(GREEN)help$(RESET)                - Display this help message, providing information on available targets."
 
 # Phony targets
-.PHONY: build check-dependencies check-system check-python check-npm check-nodejs check-docker check-poetry install-python-dependencies install-frontend-dependencies install-pre-commit-hooks lint-backend lint-frontend lint test-frontend test build-frontend start-backend start-frontend _run_setup run run-wsl setup-config setup-config-prompts setup-config-basic openhands-cloud-run docker-dev docker-run clean help
+.PHONY: build build-no-hooks check-dependencies check-system check-python check-npm check-nodejs check-docker check-poetry install-python-dependencies install-frontend-dependencies install-pre-commit-hooks lint-backend lint-frontend lint test-frontend test build-frontend start-backend start-frontend _run_setup run run-wsl setup-config setup-config-prompts setup-config-basic openhands-cloud-run docker-dev docker-run clean help
